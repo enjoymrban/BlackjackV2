@@ -71,10 +71,7 @@ class Deck {
     }
 
     // Adds all cards from @dealtCards back to the @deck and ampties the @dealtCards
-    restore(){
-        /*for(let c = 0; 0 < this.dealtCards.length; c++){
-            this.dealtCards[c].isVisible == true;
-        } */     
+    restore(){    
         this.deck.push.apply(this.deck, this.dealtCards);
         this.dealtCards = [];
     }

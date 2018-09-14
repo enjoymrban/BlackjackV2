@@ -8,7 +8,7 @@ whoseTurn
 let settings = {
     amoutOfDecks: 1,
     pullOnSoft17: false
-}
+};
 
 class Blackjack {
     constructor() {
@@ -28,54 +28,38 @@ class Blackjack {
 
     // starts the game
     start() {
-        this.card_shoe.restore();
-        this.card_shoe.shuffle();
+        this.cardShoe.restore();
+        this.cardShoe.shuffle();
         this.turn_ended = false;
 
 
 
-        if (this.checkForReadyPlayers) {
-            this.game_runs = true;
+        if (this.checkForReadyPlayers()) {
+            this.gameRuns = true;
             this.whoseTurn = 0;
-            this.hand_dealer.cards = [];
-            for (let s = 0; s < firstTable.seats.length; s++) {
+            this.handDealer = new Hand();
 
-                this.seats[s].hands = [];
-                this.seats[s].doubledown = false;
-                this.seats[s].blackjack = false;
-                this.seats[s].busted = false;
-                if (this.seats[s].occupied) {
-                    this.seats[s].infoField.text("");
-                }
-
-                this.checkForNextPlayer(-1);
-
-                if (s == this.whoseTurn) {
-                    this.seats[s].hit_button.prop("disabled", false);
-                    this.seats[s].stand_button.prop("disabled", false);
-                }
-
-            }
+            this.checkForNextHand(-1);
 
 
 
             // deal cards
-            for (let s = 0; s < this.seats.length; s++) {
-                if (this.seats[s].status) {
-                    this.seats[s].hands.push(this.card_shoe.deal());
+            for (let s = 0; s < firstTable.seats.length; s++) {
+                if (firstTable.seats[s].hands[0].status) {
+                    firstTable.seats[s].hands[0].push(this.cardShoe.deal());
                 }
             }
-            this.hand_dealer.cards.push(this.card_shoe.deal());
+            this.handDealer.cards.push(this.cardShoe.deal());
             for (let s = 0; s < this.seats.length; s++) {
-                if (this.seats[s].status) {
-                    this.seats[s].hands.push(this.card_shoe.deal());
-                    this.seats[s].blackjack = this.checkForBJ(this.seats[s].hands);
+                if (firstTable.seats[s].hands[0].status) {
+                    firstTable.seats[s].hands[0].push(this.cardShoe.deal());
+                    firstTable.seats[s].hands[0].blackjack = this.checkForBJ(this.seats[s].hands);
                 }
             }
-            this.hand_dealer.cards.push(this.card_shoe.deal());
-            this.hand_dealer.cards[1].isVisible = false;
+            this.handDealer.cards.push(this.cardShoe.deal());
+            this.handDealer.cards[1].isVisible = false;
 
-            this.refresh();
+            //this.refresh();
         } else {
             console.log("No seats subscribed or ready, game couldn't start!");
         }
@@ -83,30 +67,67 @@ class Blackjack {
     }
 
     checkForReadyPlayers() {
-        for (let p = 0; p < firstTable.seats.length; p++) {
-            if (this.firstTable.seats[p].occupied) {
-                this.firstTable.seats[p].hands = [new Hand()];
+        for (let s = 0; s < firstTable.seats.length; s++) {
+            if (firstTable.seats[s].occupied) {
+                firstTable.seats[s].hands[0].restore();
 
             }
 
         }
 
         // Check wether there is a player with a bet on the table
-        let seats_ready = 0;
-        for (let s = 0; s < this.seats.length; s++) {
-            if (this.seats[s].hands[0].bet != 0) {
-                seats_ready++;
-                this.seats[s].hands[0].status = true;
+        let seatsReady = 0;
+        for (let s = 0; s < firstTable.seats.length; s++) {
+            if (firstTable.seats[s].hands[0].bet != 0) {
+                seatsReady++;
+                firstTable.seats[s].hands[0].status = true;
             }
 
         }
 
-        return (seats_ready>0)?true:false;
+        return (seatsReady > 0) ? true : false;
 
     }
 
-    restore(){
-        
+    // which player plays next? gieve Current Player @playerId, For first turn use -1
+    checkForNextHand(seatId) {
+
+        for (let s = seatId + 1; s < this.seats.length; s++) {
+            if (this.seats[s].status & this.seats[s].blackjack == false) {
+                this.whoseTurn = this.seats[s].id;
+                break;
+            } else {
+                if (s == this.seats.length - 1) {
+                    this.dealersTurn();
+                }
+            }
+        }
+        // if the same player needs to go another turn --> Dealers turn
+        if (seatId == this.whoseTurn) {
+            this.dealersTurn();
+        }
+        this.refresh();
+
+
+    }
+
+    // player places his money
+    setBet(seatId) {
+        if (this.gameRuns) {
+            console.log("No new Bets during the game!");
+        } else {
+            //const lastBalance = firstTable.seats[p].balance;
+            let newBet = $("#nextBet" + seatId).val();
+            let addBet = Number(firstTable.seats[seatId].hands[0].bet) + Number(newBet);
+            if (addBet <= firstTable.seats[seatId].player.bankBalance & addBet >= 0) {
+                firstTable.seats[seatId].hands[0].bet = addBet;
+                firstTable.seats[seatId].player.bankBalance -= newBet;
+                console.log("Seat " + seatId + " placed a new Bet");
+            } else {
+                console.log("Seat " + seatId + " does not have enought money or tried to bet less than 0");
+            }
+        }
+
+        //this.refresh();
     }
 }
-
