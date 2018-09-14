@@ -1,0 +1,95 @@
+input[type=text], input[type=number]{
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+button[type=submit] {
+    width: 100%;
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button[type=submit]:hover {
+    background-color: #45a049;
+}
+
+form {
+    border-radius: 5px;
+    background-color: #f2f2f2;
+    padding: 20px;
+}
+#seats{
+    width: 100%;
+}
+
+.seat {
+    float: left;
+}
+
+button[id^="hit"]{
+    background-color: rgb(182, 18, 18);
+    color: black;
+}
+button[id^="stand"]{
+    background-color:green;
+    color: black;
+}
+button[id^="doubledown"]{
+    background-color:orange;
+    color: black;
+}
+div[id^="seat"]{
+    float: left;
+}
+div[id^="cards"]{
+    min-height: 123px;
+}
+img[id^="card"]{
+    width: 79px;
+    height: 123px;                        
+}
+
+.activeSeat{
+    border: 2px solid green;
+    border-radius: 15px;
+}
+
+.seatButton {
+	background-color:#44c767;
+	-moz-border-radius:42px;
+	-webkit-border-radius:42px;
+	border-radius:42px;
+	border:2px solid #18ab29;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Arial;
+	font-size:28px;
+	padding: 11px 26px;
+	text-decoration:none;
+	text-shadow:0px 0px 7px #2f6627;
+}
+.seatButton:hover {
+	background-color:#5cbf2a;
+}
+.seatButton:active {
+	position:relative;
+	top:1px;
+}
+
+.seat {
+    padding: 5px;
+    max-width: 200px;
+}
+
+

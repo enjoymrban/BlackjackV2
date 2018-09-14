@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Blackjack</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+
+</head>
+
+<body>
+    <div id="dealer">
+        <p>New game starts in:
+            <span id="newGameCounter"></span>
+        </p>
+        <div id="cardsDealer"></div>
+        <p>Dealer Hand:
+            <span id="hand_dealer_value"></span>
+        </p>
+    </div>
+    <div>
+        <button id="deal_cards" onclick="firstTable.game.start()">Start Game</button>
+    </div>
+
+    <div id="seats">
+
+        <div class="seat" id="seat5">
+            <button class="seatButton" id="seat5button" type="button" onclick="firstTable.seats[5].sitDown()">+</button>
+        </div>
+        <div class="seat" id="seat4">
+            <button class="seatButton" id="seat4button" type="button" onclick="firstTable.seats[4].sitDown()">+</button>
+        </div>
+        <div class="seat" id="seat3">
+            <button class="seatButton" id="seat3button" type="button" onclick="firstTable.seats[3].sitDown()">+</button>
+        </div>
+        <div class="seat" id="seat2">
+            <button class="seatButton" id="seat2button" type="button" onclick="firstTable.seats[2].sitDown()">+</button>
+        </div>
+        <div class="seat" id="seat1">
+            <button class="seatButton" id="seat1button" type="button" onclick="firstTable.seats[1].sitDown()">+</button>
+        </div>
+        <div class="seat" id="seat0">
+            <button class="seatButton" id="seat0button" type="button" onclick="firstTable.seats[0].sitDown()">+</button>
+        </div>
+        <!-- Player interfaces will be appdended here! -->
+    </div>
+
+    <!-- <form id="createPlayerForm" onsubmit="return false">
+            <fieldset id="disableCreatePlayer">
+                <label for="username">Username:</label>
+                <input type="text" id="username" autocomplete="off">
+                <button type="submit" id="create_player" onclick="blackjack_game.createPlayer()">Create Player</button>
+            </fieldset>
+        </form> -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="main.js"></script>
+    <script src="Blackjack/seat.js"></script>
+    <script src="Blackjack/card.js"></script>
+    <script src="Blackjack/hand.js"></script>
+    <script src="Blackjack/deck.js"></script>
+    <script src="Blackjack/player.js"></script>
+    <script src="Blackjack/blackjack.js"></script>
+    <script src="Blackjack/table.js"></script>
+    <script>
+        let firstTable = new Table();
+    </script>
+</body>
+
+</html>
