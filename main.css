@@ -48,6 +48,10 @@ button[id^="doubledown"]{
     background-color:orange;
     color: black;
 }
+button[id^="split"]{
+    background-color:skyblue;
+    color: black;
+}
 div[id^="seat"]{
     float: left;
 }

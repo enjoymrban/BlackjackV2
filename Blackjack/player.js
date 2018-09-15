@@ -9,6 +9,6 @@ class Player{
     }
 
     newBalance(win){
-        this.bankBalance + win;
+        this.bankBalance += win;
     }
 }

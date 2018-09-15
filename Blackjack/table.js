@@ -5,9 +5,10 @@ class Table{
     this.id = table_id;
     table_id++;
     this.name = "Blackjack";
-    this.game = new Blackjack(1);
     this.seats = []; 
     this.addSeats();
+    this.game = new Blackjack(this);
+    
     }
 
 

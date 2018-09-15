@@ -1,1 +1,4 @@
-adjust checkfornexthand function! carefully!
+- adjust checkfornexthand function 						DONE
+- disable split in certain situations
+- when a player hits 21 with the hit button the game needs to be continued
+- the hand which is active needs to be highlighted
