@@ -1,3 +1,6 @@
+const Seat = require('../Blackjack/seat');
+const Blackjack = require('../Blackjack/seat');
+
 let table_id = 0;
 
 class Table{
@@ -19,3 +22,5 @@ class Table{
         }
     }
 }
+
+module.exports = Table;

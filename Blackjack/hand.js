@@ -28,3 +28,5 @@ class Hand {
         this.bet = 0;
     }
 }
+
+module.exports = Hand;
