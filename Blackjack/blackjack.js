@@ -201,8 +201,8 @@ class Blackjack {
                 }
             } else if (handValue == 21) {
                 if (!this.table.seats[s].hands[this.whoseTurn[1]].doubledown) {
-                    this.checkForNextHand(s);
                     this.table.seats[s].hands[this.whoseTurn[1]].status = false;
+                    this.checkForNextHand(s);
                     console.log("player got BJ");
                 }
             }
@@ -253,8 +253,10 @@ class Blackjack {
                 handToSplit.cards.splice(1, 1);
                 handToSplit.cards.push(this.cardShoe.deal());
                 handToSplit.status = true;
+                this.checkForBJ(handToSplit);
                 newHand.cards.push(this.cardShoe.deal());
                 newHand.status = true;
+                this.checkForBJ(newHand);
                 this.table.seats[s].hands.push(newHand);
                 this.table.seats[s].player.bankBalance -= this.table.seats[s].hands[this.whoseTurn[1]].bet;
                 this.checkForNextHand(s);
@@ -265,6 +267,8 @@ class Blackjack {
         } else {
             console.log('Not your turn!');
         }
+
+        this.refresh();
     }
 
     isSplitPossible(hand) {
@@ -432,12 +436,22 @@ class Blackjack {
             // shows Playercards and Value
             for (let s = 0; s < this.table.seats.length; s++) {
                 $('#cards' + s).empty();
+                
                 for (let h = 0; h < this.table.seats[s].hands.length; h++) {
                     if (this.table.seats[s].occupied & this.table.seats[s].hands[h].cards.length > 0) {
-                        this.table.seats[s].hand_player_value.text(this.table.seats[s].hands[h].value);
-                        $('#cards' + s).append('<div id="hand' + h + '"></div>');
+
+                      
+                            if (this.table.seats[s].hands[h].soft & this.table.seats[s].hands[h].value != 21 & this.table.seats[s].hands[h].status) {
+                                this.table.seats[s].hand_player_value.text(this.table.seats[s].hands[h].value - 10 + '/' + this.table.seats[s].hands[h].value);
+                                
+                            } else {
+                                this.table.seats[s].hand_player_value.text(this.table.seats[s].hands[h].value);
+                                
+                            }
+                        
+                        $('#cards' + s).append('<div class="hand" id="hand' + s + '' + h + '"></div>');
                         for (let img = 0; img < this.table.seats[s].hands[h].cards.length; img++) {
-                            $('#hand' + h).append(' <img  id="card' + img + '' + h + '" src="transparent.png">');
+                            $('#hand' + s + '' + h).append(' <img  id="card' + img + '' + h + '" src="transparent.png">');
                             $('#card' + img + '' + h).css('background', 'url(cards.png)' + this.table.seats[s].hands[h].cards[img].left + 'px ' + this.table.seats[s].hands[h].cards[img].top + 'px');
                         }
                     } else {
@@ -453,10 +467,12 @@ class Blackjack {
                 //sets all buttons and notifications for people no on turn
                 if (this.table.seats[s].occupied) {
                     if (this.table.seats[s].id != this.whoseTurn[0]) {
-                        //$("#seat" + s).removeClass('activeSeat');
+                        //$(".hand").removeClass('activeHand');
+                        //$("#hand" + s + '' + this.whoseTurn[1]).addClass('activeHand');
                         this.table.seats[s].hit_button.prop("disabled", true);
                         this.table.seats[s].stand_button.prop("disabled", true);
                         this.table.seats[s].doubledown_button.prop("disabled", true);
+                        this.table.seats[s].split_button.prop("disabled", true);
                         // if (this.table.seats[s].hand > 21) {
                         //     this.table.seats[s].infoField.text("Player BUSTS!");
                         // } else if (this.table.seats[s].blackjack) {
@@ -465,13 +481,19 @@ class Blackjack {
 
                     } else {
                         // set all buttons and notification for the player on turn
-                        //$("#seat" + s).addClass('activeSeat');
+                        $(".hand").removeClass('activeHand');
+                        $("#hand" + s + '' + this.whoseTurn[1]).addClass('activeHand');
                         this.table.seats[s].hit_button.prop("disabled", false);
                         this.table.seats[s].stand_button.prop("disabled", false);
                         if (this.table.seats[s].hands[this.whoseTurn[1]].cards.length == 2) {
                             this.table.seats[s].doubledown_button.prop("disabled", false);
                         } else {
                             this.table.seats[s].doubledown_button.prop("disabled", true);
+                        }
+                        if (this.isSplitPossible(this.table.seats[s].hands[this.whoseTurn[1]])) {
+                            this.table.seats[s].split_button.prop("disabled", false);
+                        } else {
+                            this.table.seats[s].split_button.prop("disabled", true);
                         }
                         // if (playerValues[s] > 21) {
                         //     this.table.seats[s].infoField.text("Player BUSTS!");
@@ -481,11 +503,12 @@ class Blackjack {
                     }
 
                     // If the turn ends disable buttons for the last player and check for winners
-                    if (this.turn_ended) {
-                        //$("#seat" + this.whoseTurn).removeClass('activeSeat');
+                    if (this.turnEnded) {
+                        $(".hand").removeClass('activeHand');
                         this.table.seats[this.whoseTurn[0]].hit_button.prop("disabled", true);
                         this.table.seats[this.whoseTurn[0]].stand_button.prop("disabled", true);
                         this.table.seats[this.whoseTurn[0]].doubledown_button.prop("disabled", true);
+                        this.table.seats[this.whoseTurn[0]].split_button.prop("disabled", true);
                     }
                 }
             }
@@ -496,6 +519,7 @@ class Blackjack {
             this.deal_cards_button.show();
             for (let s = 0; s < this.table.seats.length; s++) {
                 if (this.table.seats[s].occupied) {
+                    $(".hand").removeClass('activeHand');
                     this.table.seats[s].balance_field.text(this.table.seats[s].player.bankBalance);
                     this.table.seats[s].hit_button.prop("disabled", true);
                     this.table.seats[s].stand_button.prop("disabled", true);

@@ -63,7 +63,7 @@ img[id^="card"]{
     height: 123px;                        
 }
 
-.activeSeat{
+.activeHand{
     border: 2px solid green;
     border-radius: 15px;
 }

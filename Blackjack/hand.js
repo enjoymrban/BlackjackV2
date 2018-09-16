@@ -1,7 +1,7 @@
 class Hand {
     constructor() {
         this.cards = [];
-        this.bet = 0;
+        this.bet = 10;
         this.soft = false;
         this.doubledown = false;
         this.blackjack = false;

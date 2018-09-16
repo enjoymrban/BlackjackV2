@@ -26,6 +26,7 @@ class Seat{
         this.hit_button = $("#hit" + this.id);
         this.stand_button = $("#stand" + this.id);
         this.doubledown_button = $("#doubledown" + this.id);
+        this.split_button = $("#split" + this.id);
         this.balance_field = $("#player_balance" + this.id);
         this.hand_player_value = $("#hand_player_value" + this.id);
         this.info_field = $("#info_field" + this.id);

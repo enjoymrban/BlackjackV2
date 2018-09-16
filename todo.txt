@@ -1,4 +1,20 @@
+JAVASCRIPT
+
 - adjust checkfornexthand function 						DONE
-- disable split in certain situations
-- when a player hits 21 with the hit button the game needs to be continued
-- the hand which is active needs to be highlighted
+- disable split in certain situations                   DONE
+- when a player hits 21 with the hit button the game needs to be continued              DONE
+- the hand which is active needs to be highlighted                                      DONE
+- Split doesn't work if Value is K, J, Q (WHO SPLITS THOSE ANYWAY!?!?!)
+- If a hand is soft there need to be 2 values                                           DONE                                   
+- If a hand gets split the value needs to be shown! 
+
+
+
+
+
+- create test class
+
+
+CSS 
+
+- card images need to be over each other
