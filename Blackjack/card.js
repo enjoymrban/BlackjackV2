@@ -9,7 +9,9 @@ class Card {
         this.top = top;
         this.width = "78px";
         this.height = "122px";
-    
+
     }
 
 }
+
+module.exports = Card;

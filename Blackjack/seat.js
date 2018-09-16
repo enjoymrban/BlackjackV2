@@ -21,19 +21,19 @@ class Seat{
     sitDown(player){
         this.player = player;  // normaly player
         this.occupied = true;
-        let playerInterface = $('<div id="cards' + this.id + '"></div><p>Player Hand:<span id="hand_player_value' + this.id + '"></span><div id="controlsSeat' + this.id + '"></p><button id="hit' + this.id + '" onclick="firstTable.game.hit(' + this.id + ')">Hit</button><button id="stand' + this.id + '" onclick="firstTable.game.stand(' + this.id + ')">Stand</button><button id="doubledown' + this.id + '" onclick="firstTable.game.doubledown(' + this.id + ')">2x</button><button id="split' + this.id + '" onclick="firstTable.game.split(' + this.id + ')">split</button></div><form id="nextBetForm' + this.id + '" onsubmit="return false"><label for="nextBet' + this.id + '">Next bet:</label><input type="number" id="nextBet' + this.id + '"><button type="submit" id="place_bet' + this.id + '"onclick="firstTable.game.setBet(' + this.id + ')">Add Bet</button></form><div id="infoDiv"><p>Info:<span id="info_field' + this.id + '"></span></p><p>Balance:<span id="player_balance' + this.id + '"></span></p><button id="leave_table_button'+this.id+'" onclick="firstTable.seats['+this.id+'].standUp()">stand up</button></div>');
-        playerInterface.appendTo("#playerInterface" + this.id);
+        // let playerInterface = $('<div id="cards' + this.id + '"></div><p>Player Hand:<span id="hand_player_value' + this.id + '"></span><div id="controlsSeat' + this.id + '"></p><button id="hit' + this.id + '" onclick="firstTable.game.hit(' + this.id + ')">Hit</button><button id="stand' + this.id + '" onclick="firstTable.game.stand(' + this.id + ')">Stand</button><button id="doubledown' + this.id + '" onclick="firstTable.game.doubledown(' + this.id + ')">2x</button><button id="split' + this.id + '" onclick="firstTable.game.split(' + this.id + ')">split</button></div><form id="nextBetForm' + this.id + '" onsubmit="return false"><label for="nextBet' + this.id + '">Next bet:</label><input type="number" id="nextBet' + this.id + '"><button type="submit" id="place_bet' + this.id + '"onclick="firstTable.game.setBet(' + this.id + ')">Add Bet</button></form><div id="infoDiv"><p>Info:<span id="info_field' + this.id + '"></span></p><p>Balance:<span id="player_balance' + this.id + '"></span></p><button id="leave_table_button'+this.id+'" onclick="firstTable.seats['+this.id+'].standUp()">stand up</button></div>');
+        // playerInterface.appendTo("#playerInterface" + this.id);
 
         
-        this.hit_button = $("#hit" + this.id);
-        this.stand_button = $("#stand" + this.id);
-        this.doubledown_button = $("#doubledown" + this.id);
-        this.split_button = $("#split" + this.id);
-        this.balance_field = $("#player_balance" + this.id);
-        this.hand_player_value = $("#hand_player_value" + this.id);
-        this.info_field = $("#info_field" + this.id);
+        // this.hit_button = $("#hit" + this.id);
+        // this.stand_button = $("#stand" + this.id);
+        // this.doubledown_button = $("#doubledown" + this.id);
+        // this.split_button = $("#split" + this.id);
+        // this.balance_field = $("#player_balance" + this.id);
+        // this.hand_player_value = $("#hand_player_value" + this.id);
+        // this.info_field = $("#info_field" + this.id);
 
-        $("#seat" + this.id + "button").hide();
+        //$("#seat" + this.id + "button").hide();
         
         
     }

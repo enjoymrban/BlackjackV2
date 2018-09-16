@@ -5,6 +5,7 @@ const Table = require('./Blackjack/table');
 
 
 let table = new Table();
+//console.log(table);
 
 //set the template engine ejs
 app.set('view engine', 'ejs');
@@ -27,6 +28,7 @@ let clients = [];
 //listen on every connection
 io.on('connection', (client) => {
 
+    //add new Player to the client
     clients.push(client);
     console.log('New user connected');
     client.username = "Anonymous";
@@ -53,29 +55,28 @@ io.on('connection', (client) => {
 
     });
 
+    client.on('sit_down', (s) =>{
+        console.log('player'+client.username+' sat down on seat '+s);
+        table.seats[s].sitDown();
+    });
 
-    // client.on("join", function(name){
-    // 	people[client.id] = name;
-    // 	client.emit("update", "You have connected to the server.");
-    // 	socket.sockets.emit("update", name + " has joined the server.")
-    // 	socket.sockets.emit("update-people", people);
+    // client.on('stand_up', (s) =>{
+
     // });
 
+    client.on('start_game',()=>{
+        table.game.start();
+        console.log(table.game.gameRuns);
+    });
+
+
+    
 
 
 
 
 
-
-    // //listen on new_messages
-    // socket.on('new_message', (data) => {
-    //     IO.sockets.emit('new_message', { message: data.message, username: socket.username});
-    // });
-
-    //   //listen on typing
-    //   socket.on('typing', (data) =>{
-    //     socket.broadcast.emit('typing', {username: socket.username});
-    // });
+    
 
 
 });

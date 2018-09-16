@@ -1,3 +1,5 @@
+const Deck = require('../Blackjack/deck');
+const Hand = require('../Blackjack/hand');
 /* Data to send to the client
 
 visible cards form dealer!
@@ -21,9 +23,9 @@ class Blackjack {
         this.turnEnded = false;
         this.whoseTurn = [0, 0]; // seatId, hand
 
-        this.deal_cards_button = $("#deal_cards");
-        this.hand_dealer_value = $("#hand_dealer_value");
-        this.refresh();
+        //this.deal_cards_button = $("#deal_cards");
+        //this.hand_dealer_value = $("#hand_dealer_value");
+        //this.refresh();
     }
 
 
@@ -69,7 +71,7 @@ class Blackjack {
 
                 this.checkForNextHand(0);
 
-                this.refresh();
+                //this.refresh();
             } else {
                 console.log("No seats subscribed or ready, game couldn't start!");
             }
@@ -81,7 +83,9 @@ class Blackjack {
 
     // Checks whether there are players ready to play
     checkForReadyPlayers() {
+        
         for (let s = 0; s < this.table.seats.length; s++) {
+            console.log(this.table.seats[s].occupied);
             if (this.table.seats[s].occupied) {
                 this.table.seats[s].hands[0].restore();
 
@@ -97,7 +101,7 @@ class Blackjack {
             }
 
         }
-
+        console.log(seatsReady+' Seats Ready');
         return (seatsReady > 0) ? true : false;
 
     }
@@ -123,7 +127,7 @@ class Blackjack {
         // if (seatId == this.whoseTurn[0]) {
         //     this.dealersTurn();
         // }
-        this.refresh();
+        //this.refresh();
 
 
     }
@@ -212,7 +216,7 @@ class Blackjack {
         }
         console.log(this.handValue(this.table.seats[s].hands[this.whoseTurn[1]]));
 
-        this.refresh();
+        //this.refresh();
     }
 
     stand(s) {
@@ -268,7 +272,7 @@ class Blackjack {
             console.log('Not your turn!');
         }
 
-        this.refresh();
+        //this.refresh();
     }
 
     isSplitPossible(hand) {
@@ -292,13 +296,13 @@ class Blackjack {
         if (handsNotBusted != 0) {
             while (this.handValue(this.handDealer) < 17) {
                 this.handDealer.cards.push(this.cardShoe.deal());
-                this.refresh();
+                //this.refresh();
             }
         }
 
         this.turnEnded = true;
         this.checkForWinner();
-        this.refresh();
+       // this.refresh();
     }
 
     // who wins/ loses 
@@ -350,7 +354,7 @@ class Blackjack {
                 }
             }
         }
-        this.refresh();
+        //this.refresh();
         this.end();
     }
 
@@ -371,7 +375,7 @@ class Blackjack {
             }
         }
         this.gameRuns = false;
-        this.refresh();
+        //this.refresh();
         return;
     }
 
@@ -393,9 +397,10 @@ class Blackjack {
             }
         }
 
-        this.refresh();
+        //this.refresh();
     }
 
+    /*
     refresh() {
 
         // show bank balance of every player at the table
@@ -528,5 +533,7 @@ class Blackjack {
             }
         }
 
-    }
+    }*/
 }
+
+module.exports = Blackjack;

@@ -1,5 +1,5 @@
 const Seat = require('../Blackjack/seat');
-const Blackjack = require('../Blackjack/seat');
+const Blackjack = require('../Blackjack/blackjack');
 
 let table_id = 0;
 

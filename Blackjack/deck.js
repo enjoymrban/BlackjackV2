@@ -1,3 +1,4 @@
+const Card = require('../Blackjack/card');
 //A Deck 
 class Deck {
 
@@ -78,3 +79,4 @@ class Deck {
 
 }
 
+module.exports=Deck;
