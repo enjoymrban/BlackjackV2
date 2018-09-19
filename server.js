@@ -7,6 +7,7 @@ const Table = require('./Blackjack/table');
 let table = new Table();
 //console.log(table);
 
+
 //set the template engine ejs
 app.set('view engine', 'ejs');
 
@@ -30,17 +31,16 @@ io.on('connection', (client) => {
 
     //add new Player to the client
     clients.push(client);
-    console.log('New user connected');
     client.username = "Anonymous";
-    client.player = new Player(clients.username);
-    console.log(clients.length);
-
+    client.player = new Player(client.username);
+    console.log('New user connected. Now: ' + clients.length + ' clients connected');
+    refresh();
+    client.emit('conInfo', client.player.id);
 
     client.on('disconnect', () => {
-        console.log('user disconnected');
         let indexOf = clients.indexOf(client);
         clients.splice(indexOf, 1);
-        console.log(clients.length);
+        console.log('user disconnected. Now ' + clients.length + ' clients connected');
     });
 
     //liston on change_username
@@ -50,33 +50,100 @@ io.on('connection', (client) => {
         client.player.username = data.username;
 
         let indexOf = clients.indexOf(client);
+        refresh();
         console.log(clients[indexOf].player);
 
 
     });
 
-    client.on('sit_down', (s) =>{
-        console.log('player'+client.username+' sat down on seat '+s);
-        table.seats[s].sitDown();
+    // sit down
+    client.on('sit_down', (s) => {
+        console.log('Player ' + client.username + ' sat down on seat:  ' + s);
+        table.seats[s].sitDown(client.player);
+        refresh()
+        //io.sockets.emit('someone_sat_down', { seatId: s });
+
+        //client.emit('i_sat_down', { seatId: s, success: true });
     });
 
-    // client.on('stand_up', (s) =>{
+    client.on('stand_up', (s) => {
+        console.log('Player ' + client.username + ' stood up from seat: ' + s);
+        if (table.seats[s].standUp()) {
+            refresh();
+            io.sockets.emit('someone_stood_up', s);
+        }
+    });
 
-    // });
+    client.on('place_bet', (data) => {
+        table.game.setBet(data.seatId, data.bet);
+    });
 
-    client.on('start_game',()=>{
+
+    // start the game
+    client.on('start_game', () => {
         table.game.start();
-        console.log(table.game.gameRuns);
+        refresh();
+        //console.log(table.game.gameRuns);
     });
 
 
-    
+    // hit
+    client.on('hit', (s) => {
+        table.game.hit(s);
+        refresh();
+
+    });
+
+    // stand
+    client.on('stand', (s) => {
+        table.game.stand(s);
+        refresh();
+
+    });
+
+    // doubledown
+    client.on('doubledown', (s) => {
+        table.game.doubledown(s);
+        refresh();
+    });
+
+    // split
+    client.on('split', (s) => {
+        table.game.split(s);
+        refresh();
+    });
+
+
+
+
+    function refresh() {
+
+
+        
+        let seatsToSend = JSON.parse(JSON.stringify(table.seats))
+        for (let s = 0; s < table.seats.length; s++) {
+            if (seatsToSend[s].player != null & seatsToSend[s].player != undefined) {
+               delete seatsToSend[s].player.bankBalance;
+            }
+        }
+        let dataForClient = {
+            gameRuns: table.game.gameRuns,
+            whoseTurn: table.game.whoseTurn,
+            handDealer: table.game.handDealer,
+            seats: seatsToSend
+            
+
+        }
+        console.log("refresh client " + dataForClient);
+        //console.log(clients);
+        io.sockets.emit('refresh', dataForClient);
+    }
 
 
 
 
 
-    
 
 
 });
+

@@ -36,6 +36,13 @@ class Blackjack {
             this.cardShoe.shuffle();
             this.turnEnded = false;
 
+            for (let s = 0; s < this.table.seats.length; s++) {
+                if (this.table.seats[s].occupied) {
+                    let bet = this.table.seats[s].hands[0].bet;
+                    this.table.seats[s].restoreHands(bet);
+                }
+            }
+
 
 
             if (this.checkForReadyPlayers()) {
@@ -50,6 +57,7 @@ class Blackjack {
                     }
                 }
                 this.handDealer.cards.push(this.cardShoe.deal());
+                console.log(this.handDealer.cards[0].value);
                 for (let s = 0; s < this.table.seats.length; s++) {
                     if (this.table.seats[s].hands[0].status) {
                         this.table.seats[s].hands[0].cards.push(this.cardShoe.deal());
@@ -83,9 +91,9 @@ class Blackjack {
 
     // Checks whether there are players ready to play
     checkForReadyPlayers() {
-        
+
         for (let s = 0; s < this.table.seats.length; s++) {
-            console.log(this.table.seats[s].occupied);
+
             if (this.table.seats[s].occupied) {
                 this.table.seats[s].hands[0].restore();
 
@@ -101,7 +109,7 @@ class Blackjack {
             }
 
         }
-        console.log(seatsReady+' Seats Ready');
+        console.log(seatsReady + ' Seats Ready');
         return (seatsReady > 0) ? true : false;
 
     }
@@ -302,7 +310,7 @@ class Blackjack {
 
         this.turnEnded = true;
         this.checkForWinner();
-       // this.refresh();
+        // this.refresh();
     }
 
     // who wins/ loses 
@@ -369,11 +377,7 @@ class Blackjack {
 
     // game has ended 
     end() {
-        for (let s = 0; s < this.table.seats.length; s++) {
-            if (this.table.seats[s].occupied) {
-                this.table.seats[s].restoreHands();
-            }
-        }
+       
         this.gameRuns = false;
         //this.refresh();
         return;
@@ -381,19 +385,21 @@ class Blackjack {
 
 
     // player places his money
-    setBet(seatId) {
+    setBet(s, newBet) {
         if (this.gameRuns) {
             console.log("No new Bets during the game!");
         } else {
             //const lastBalance = this.table.seats[p].balance;
-            let newBet = $("#nextBet" + seatId).val();
-            let addBet = Number(this.table.seats[seatId].hands[0].bet) + Number(newBet);
-            if (addBet <= this.table.seats[seatId].player.bankBalance & addBet >= 0) {
-                this.table.seats[seatId].hands[0].bet = addBet;
-                this.table.seats[seatId].player.bankBalance -= newBet;
-                console.log("Seat " + seatId + " placed a new Bet");
+            //let newBet = $("#nextBet" + seatId).val();
+
+            let addBet = Number(this.table.seats[s].hands[0].bet) + Number(newBet);
+            if (addBet <= this.table.seats[s].player.bankBalance & addBet >= 0) {
+                this.table.seats[s].hands[0].bet = addBet;
+                this.table.seats[s].player.bankBalance -= newBet;
+                console.log("Seat " + s + " placed a new Bet");
+
             } else {
-                console.log("Seat " + seatId + " does not have enought money or tried to bet less than 0");
+                console.log("Seat " + s + " does not have enought money or tried to bet less than 0");
             }
         }
 

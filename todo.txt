@@ -18,3 +18,11 @@ JAVASCRIPT
 CSS 
 
 - card images need to be over each other
+
+
+-------------------------------------------------------------------------------------
+
+JAVASCRIPT
+
+- send bankbalance only to the connected player!
+- invisible card is sent to the client ---> bad!

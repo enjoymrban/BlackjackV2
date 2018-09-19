@@ -1,11 +1,11 @@
 let player_id = 0;
 
 class Player{
-    constructor(username, bankBalance = 200){
+    constructor(username){
         this.id = player_id;
         player_id++;
         this.username = username;
-        this.bankBalance = bankBalance;
+        this.bankBalance = 200;
     }
 
     newBalance(win){
@@ -14,3 +14,4 @@ class Player{
 }
 
 module.exports = Player;
+
