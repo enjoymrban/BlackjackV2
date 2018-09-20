@@ -1,5 +1,5 @@
 $(() => {
-    let socket = io.connect('http://146.136.58.59:3000');
+    let socket = io.connect('http://localhost:3000');
 
     let myPlayerId = null;
 
