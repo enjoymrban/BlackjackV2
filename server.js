@@ -19,6 +19,10 @@ app.get('/', (req, res) => {
     res.render('index');
 });
 
+//routes
+app.get('/blackjack', (req, res) => {
+    res.render('blackjack');
+});
 //listen on port 3000
 server = app.listen(3000);
 
@@ -60,7 +64,7 @@ io.on('connection', (client) => {
     client.on('sit_down', (s) => {
         console.log('Player ' + client.username + ' sat down on seat:  ' + s);
         table.seats[s].sitDown(client.player);
-        refresh()
+        refresh();
         //io.sockets.emit('someone_sat_down', { seatId: s });
 
         //client.emit('i_sat_down', { seatId: s, success: true });
@@ -120,7 +124,7 @@ io.on('connection', (client) => {
 
 
         
-        let seatsToSend = JSON.parse(JSON.stringify(table.seats))
+        let seatsToSend = JSON.parse(JSON.stringify(table.seats));
         for (let s = 0; s < table.seats.length; s++) {
             if (seatsToSend[s].player != null & seatsToSend[s].player != undefined) {
                delete seatsToSend[s].player.bankBalance;
@@ -133,7 +137,7 @@ io.on('connection', (client) => {
             seats: seatsToSend
             
 
-        }
+        };
         console.log("refresh client " + dataForClient);
         //console.log(clients);
         io.sockets.emit('refresh', dataForClient);

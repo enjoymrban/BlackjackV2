@@ -13,14 +13,7 @@ class Hand {
     }
 
     restore() {
-        this.cards = [];
-        this.soft = false;
-        this.doubledown = false;
-        this.blackjack = false;
-        this.busted = false;
-        this.status = false;
-        this.splitPossible = false;
-        this.value = 0;
+       this.bet = 0;
 
     }
 

@@ -1,3 +1,8 @@
+
+
+
+
+
 input[type=text], input[type=number]{
     width: 100%;
     padding: 12px 20px;
@@ -95,5 +100,7 @@ img[id^="card"]{
     padding: 5px;
     max-width: 200px;
 }
+
+
 
 
