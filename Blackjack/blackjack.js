@@ -22,10 +22,6 @@ class Blackjack {
         this.gameRuns = false;
         this.turnEnded = false;
         this.whoseTurn = [0, 0]; // seatId, hand
-
-        //this.deal_cards_button = $("#deal_cards");
-        //this.hand_dealer_value = $("#hand_dealer_value");
-        //this.refresh();
     }
 
 
@@ -36,6 +32,8 @@ class Blackjack {
             this.cardShoe.shuffle();
             this.turnEnded = false;
 
+
+            // deletes the old hand and creates a new one with the new bet!
             for (let s = 0; s < this.table.seats.length; s++) {
                 if (this.table.seats[s].occupied) {
                     let bet = this.table.seats[s].hands[0].bet;
@@ -79,7 +77,6 @@ class Blackjack {
 
                 this.checkForNextHand(0);
 
-                //this.refresh();
             } else {
                 console.log("No seats subscribed or ready, game couldn't start!");
             }
@@ -92,13 +89,6 @@ class Blackjack {
     // Checks whether there are players ready to play
     checkForReadyPlayers() {
 
-        for (let s = 0; s < this.table.seats.length; s++) {
-
-            if (this.table.seats[s].occupied) {
-                this.table.seats[s].hands[0].restore();
-
-            }
-        }
 
         // Check wether there is a player with a bet on the this.table
         let seatsReady = 0;
@@ -131,13 +121,6 @@ class Blackjack {
 
             }
         }
-        // if the same player needs to go another turn --> Dealers turn
-        // if (seatId == this.whoseTurn[0]) {
-        //     this.dealersTurn();
-        // }
-        //this.refresh();
-
-
     }
 
     checkForBJ(hand) {
@@ -279,8 +262,6 @@ class Blackjack {
         } else {
             console.log('Not your turn!');
         }
-
-        //this.refresh();
     }
 
     isSplitPossible(hand) {
@@ -304,13 +285,11 @@ class Blackjack {
         if (handsNotBusted != 0) {
             while (this.handValue(this.handDealer) < 17) {
                 this.handDealer.cards.push(this.cardShoe.deal());
-                //this.refresh();
             }
         }
 
         this.turnEnded = true;
         this.checkForWinner();
-        // this.refresh();
     }
 
     // who wins/ loses 
@@ -362,7 +341,6 @@ class Blackjack {
                 }
             }
         }
-        //this.refresh();
         this.end();
     }
 
@@ -377,9 +355,15 @@ class Blackjack {
 
     // game has ended 
     end() {
-       
+
+        // sets the bet of the hand to 0 to be ready for a new bet
+        for (let s = 0; s < this.table.seats.length; s++) {
+            if (this.table.seats[s].occupied) {
+                this.table.seats[s].hands[0].restore();
+            }
+        }
         this.gameRuns = false;
-        //this.refresh();
+
         return;
     }
 
@@ -389,8 +373,6 @@ class Blackjack {
         if (this.gameRuns) {
             console.log("No new Bets during the game!");
         } else {
-            //const lastBalance = this.table.seats[p].balance;
-            //let newBet = $("#nextBet" + seatId).val();
 
             let addBet = Number(this.table.seats[s].hands[0].bet) + Number(newBet);
             if (addBet <= this.table.seats[s].player.bankBalance & addBet >= 0) {
@@ -403,143 +385,9 @@ class Blackjack {
             }
         }
 
-        //this.refresh();
+
     }
 
-    /*
-    refresh() {
-
-        // show bank balance of every player at the table
-        for (let s = 0; s < this.table.seats.length; s++) {
-            if (this.table.seats[s].occupied) {
-                this.table.seats[s].balance_field.text(this.table.seats[s].player.bankBalance);
-
-            }
-        }
-
-        // game is in progress
-        if (this.gameRuns) {
-            // this.createPlayerForm.prop("disabled", true);
-            this.deal_cards_button.hide();
-            this.hand_dealer_value.text(this.handDealer.value); //shows dealer hand value
-            $('#cardsDealer').empty();
-
-            for (let s = 0; s < this.table.seats.length; s++) {
-                if (this.table.seats[s].occupied) {
-                    $('#cards' + s).empty();
-                }
-            }
-
-            //  shows Dealerscards , in the beginning only show firstCard
-            if (this.handDealer.cards.length >= 2) {
-                for (let img = 0; img < this.handDealer.cards.length; img++) {
-                    if (this.handDealer.cards[img].isVisible == false) {
-                        $('#cardsDealer').append(' <img  id="card' + img + 'dealer" src="transparent.png">'); // needs transparent picture, without it background property can't be used.
-                        $('#card' + img + '' + "dealer").css('background', 'url(cards.png)' + -158 + 'px ' + -492 + 'px');
-                    } else {
-                        $('#cardsDealer').append(' <img  id="card' + img + 'dealer" src="transparent.png">');
-                        $('#card' + img + '' + "dealer").css('background', 'url(cards.png)' + this.handDealer.cards[img].left + 'px ' + this.handDealer.cards[img].top + 'px');
-
-                    }
-                }
-            }
-
-            // shows Playercards and Value
-            for (let s = 0; s < this.table.seats.length; s++) {
-                $('#cards' + s).empty();
-                
-                for (let h = 0; h < this.table.seats[s].hands.length; h++) {
-                    if (this.table.seats[s].occupied & this.table.seats[s].hands[h].cards.length > 0) {
-
-                      
-                            if (this.table.seats[s].hands[h].soft & this.table.seats[s].hands[h].value != 21 & this.table.seats[s].hands[h].status) {
-                                this.table.seats[s].hand_player_value.text(this.table.seats[s].hands[h].value - 10 + '/' + this.table.seats[s].hands[h].value);
-                                
-                            } else {
-                                this.table.seats[s].hand_player_value.text(this.table.seats[s].hands[h].value);
-                                
-                            }
-                        
-                        $('#cards' + s).append('<div class="hand" id="hand' + s + '' + h + '"></div>');
-                        for (let img = 0; img < this.table.seats[s].hands[h].cards.length; img++) {
-                            $('#hand' + s + '' + h).append(' <img  id="card' + img + '' + h + '" src="transparent.png">');
-                            $('#card' + img + '' + h).css('background', 'url(cards.png)' + this.table.seats[s].hands[h].cards[img].left + 'px ' + this.table.seats[s].hands[h].cards[img].top + 'px');
-                        }
-                    } else {
-                        //this.table.seats[s].hand_player_value.text("No bet received!");
-                    }
-                }
-            }
-
-            // depending on @whoseTurn enable/disable buttons
-            // show info if player already busted
-            for (let s = 0; s < this.table.seats.length; s++) {
-
-                //sets all buttons and notifications for people no on turn
-                if (this.table.seats[s].occupied) {
-                    if (this.table.seats[s].id != this.whoseTurn[0]) {
-                        //$(".hand").removeClass('activeHand');
-                        //$("#hand" + s + '' + this.whoseTurn[1]).addClass('activeHand');
-                        this.table.seats[s].hit_button.prop("disabled", true);
-                        this.table.seats[s].stand_button.prop("disabled", true);
-                        this.table.seats[s].doubledown_button.prop("disabled", true);
-                        this.table.seats[s].split_button.prop("disabled", true);
-                        // if (this.table.seats[s].hand > 21) {
-                        //     this.table.seats[s].infoField.text("Player BUSTS!");
-                        // } else if (this.table.seats[s].blackjack) {
-                        //     this.table.seats[s].infoField.text("BLACKJACK");
-                        // }
-
-                    } else {
-                        // set all buttons and notification for the player on turn
-                        $(".hand").removeClass('activeHand');
-                        $("#hand" + s + '' + this.whoseTurn[1]).addClass('activeHand');
-                        this.table.seats[s].hit_button.prop("disabled", false);
-                        this.table.seats[s].stand_button.prop("disabled", false);
-                        if (this.table.seats[s].hands[this.whoseTurn[1]].cards.length == 2) {
-                            this.table.seats[s].doubledown_button.prop("disabled", false);
-                        } else {
-                            this.table.seats[s].doubledown_button.prop("disabled", true);
-                        }
-                        if (this.isSplitPossible(this.table.seats[s].hands[this.whoseTurn[1]])) {
-                            this.table.seats[s].split_button.prop("disabled", false);
-                        } else {
-                            this.table.seats[s].split_button.prop("disabled", true);
-                        }
-                        // if (playerValues[s] > 21) {
-                        //     this.table.seats[s].infoField.text("Player BUSTS!");
-                        // } else if (this.table.seats[s].blackjack) {
-                        //     this.table.seats[s].infoField.text("BLACKJACK");
-                        // }
-                    }
-
-                    // If the turn ends disable buttons for the last player and check for winners
-                    if (this.turnEnded) {
-                        $(".hand").removeClass('activeHand');
-                        this.table.seats[this.whoseTurn[0]].hit_button.prop("disabled", true);
-                        this.table.seats[this.whoseTurn[0]].stand_button.prop("disabled", true);
-                        this.table.seats[this.whoseTurn[0]].doubledown_button.prop("disabled", true);
-                        this.table.seats[this.whoseTurn[0]].split_button.prop("disabled", true);
-                    }
-                }
-            }
-
-            // game is not in progress disable buttons
-        } else {
-            //this.createPlayerForm.prop("disabled", false);
-            this.deal_cards_button.show();
-            for (let s = 0; s < this.table.seats.length; s++) {
-                if (this.table.seats[s].occupied) {
-                    $(".hand").removeClass('activeHand');
-                    this.table.seats[s].balance_field.text(this.table.seats[s].player.bankBalance);
-                    this.table.seats[s].hit_button.prop("disabled", true);
-                    this.table.seats[s].stand_button.prop("disabled", true);
-                    this.table.seats[s].doubledown_button.prop("disabled", true);
-                }
-            }
-        }
-
-    }*/
 }
 
 module.exports = Blackjack;
